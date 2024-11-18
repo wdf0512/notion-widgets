@@ -3,30 +3,56 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Good Evening Message</title>
+    <title>Good Evening Widget</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <style>
+      :root {
+        --background-color-light: #ffffff;
+        --text-color-light: #000000;
+        --container-border-light: #000000;
+
+        --background-color-dark: #121212;
+        --text-color-dark: #ffffff;
+        --container-border-dark: #ffffff;
+      }
+
+      /* Light theme (default) */
       body {
         font-family: "Times New Roman", Times, serif;
         margin: 0;
+        height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        /* background-color: #f8f8f8; */
+        background-color: var(--background-color-light);
+        color: var(--text-color-light);
       }
 
       .container {
         text-align: center;
-        border: 2px solid black;
-        border-bottom: 5px solid black;
-        padding: 20px 40px;
+        border: 2px solid var(--container-border-light);
+        border-bottom: 5px solid var(--container-border-light);
+        padding: 20px;
         border-radius: 10px;
-        background-color: white;
+        background-color: var(--background-color-light);
         box-shadow: 2px 10px 8px rgba(0, 0, 0, 0.2);
-        width: 100%;
+        width: 90%;
+        max-width: 600px;
+        height: auto;
+      }
+
+      /* Dark theme */
+      body.dark-mode {
+        background-color: var(--background-color-dark);
+        color: var(--text-color-dark);
+      }
+
+      body.dark-mode .container {
+        border-color: var(--container-border-dark);
+        background-color: var(--background-color-dark);
+        box-shadow: 2px 10px 8px rgba(255, 255, 255, 0.2);
       }
 
       .greeting {
@@ -80,11 +106,29 @@
         document.getElementById("current-time").textContent = formattedTime;
       }
 
+      // Check system theme preference and set initial theme
+      function applyTheme() {
+        if (
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+          document.body.classList.add("dark-mode");
+        } else {
+          document.body.classList.remove("dark-mode");
+        }
+      }
+
+      // Listen for theme changes
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", applyTheme);
+
       // Update date and time every second
       setInterval(updateDateTime, 1000);
 
-      // Initial call to set the date and time when the page loads
+      // Initial setup
       updateDateTime();
+      applyTheme();
     </script>
   </body>
 </html>
